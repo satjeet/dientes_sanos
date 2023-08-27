@@ -1,5 +1,3 @@
-// lib/views/login_view.dart
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,19 +13,38 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> _registerOrLogin() async {
     try {
-      if (_auth.currentUser == null) {
-        await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+      // Primero, intenta iniciar sesión
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } catch (e) {
+      // Si el inicio de sesión falla, intenta registrar al usuario
+      if (e is FirebaseAuthException && e.code == 'user-not-found') {
+        try {
+          await _auth.createUserWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+        } catch (e) {
+          if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
+            // Muestra un mensaje si el correo electrónico ya está en uso
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('El correo electrónico ya está en uso.')),
+            );
+          } else {
+            // Muestra cualquier otro error
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.toString())),
+            );
+          }
+        }
       } else {
-        await _auth.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
+        // Muestra cualquier otro error del inicio de sesión
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
         );
       }
-    } catch (e) {
-      print(e);
     }
   }
 

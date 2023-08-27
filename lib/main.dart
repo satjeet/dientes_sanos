@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
       title: 'Clínica Dental',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-        useMaterial3: true,
+        useMaterial3: true, fontFamily: 'NotoSans'
+
       ),
       home: AuthHandler(),
     );

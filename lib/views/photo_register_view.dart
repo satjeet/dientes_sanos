@@ -19,18 +19,18 @@ class _PhotoRegisterViewState extends State<PhotoRegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro de Fotografías'),
+        title: Text('Registro de Fotografias', style: TextStyle(fontFamily: 'NotoSans')),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Aquí irá el registro de fotografías'),
+            Text('Aqui ira el registro de fotografias', style: TextStyle(fontFamily: 'NotoSans')),
             if (imageUrl != null)
               Image.network(imageUrl!),
             ElevatedButton(
               onPressed: _pickImage,
-              child: Text('Seleccionar Imagen'),
+              child: Text('Seleccionar Imagen', style: TextStyle(fontFamily: 'NotoSans')),
             ),
           ],
         ),
